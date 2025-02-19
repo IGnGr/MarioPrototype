@@ -1,114 +1,85 @@
-# PEC3 - Un Juego de Plataformas v2
+# PEC3 - A Platform Game v2
 
+![A Platform Game](screenshots/inicio.png "Start")
 
-![Un Juego de Plataformas](screenshots/inicio.png "Inicio")
+## Description
 
+A recreation of level 1-1 from the classic game "Super Mario Bros." The goal was to maintain the game feeling of Mario's movement. Original assets have been used to improve the presentation.
 
+## Implemented Sections
 
-## Descripción
+The PAC2 was taken up again and expanded. Missing optional behaviors (the mushroom and the destruction of brick blocks in this state) have been implemented. Additionally, the PEC3 requirements have been added, such as 2 new types of enemies (the cloud enemy and the red hedgehog), lives, various checkpoints, and particles have been used in the flowers and fireballs. The fire flower and additional animations have also been added to the game. Tags and layers are used, although in some cases they were already used in PAC2.
 
-Una recreación del nivel 1-1 del clásico juego "Super Mario Bros".
+## How to Play
 
-Se ha intentado mantener el game feeling del movimiento de mario. Se han usado assets originales para mejorar la presentación.
+The game can be controlled with a keyboard or game controller using Unity's new Input System. The controls are as follows:
 
-## Apartados implementados
+Keyboard:
 
-Se ha retomado la PAC2 y se ha ampliado.
-Se han implementado los comportamientos faltantes opcionales (la seta y que los bloques de ladrillo fueran destruidos en este estado).
+- A and D keys / arrow keys to move horizontally
+- Space to jump
+- Shift to move faster
+- E to shoot the fireball (Only with the flower)
 
-Además, se han añadido los requisitos de la PEC3, como son 2 tipos nuevos de enemigo (el enemigo nube y el erizo rojo), vidas, distintos checkpoints, se han usado partículas en las flores y bolas de fuego. 
-Se ha añádido al juego la flor de fuego y animaciones adicionales
-También se hace uso de tags y layers, aunque en algunos casos se hacía ya en la PEC2.
+Game Controller (Xbox):
 
-## Cómo jugar
+- Left joystick to move horizontally
+- A to jump
+- X to move faster
+- B to shoot the fireball (Only with the flower)
 
-El juego se puede controlar con teclado o mando al usar el nuevo Input System de Unity.
+## Screenshots and Video
 
-Los controles son los siguientes:
-
-Teclado:
-
-- Teclas A y D / flechas del teclado para moverse horizontalmente
-- Espacio para saltar
-- Shift para moverse más rápido
-- E para disparar la bola de fuego (Solo con la flor)
-
-Mando (Xbox):
-
-- Joystick izquierdo para moverse horizontalmente
-- A para saltar
-- X para moverse más rápido
-- B para disparar la bola de fuego (Solo con la flor)
-
-
-## Capturas de pantalla y vídeo
-
-![Un Juego de Plataformas](screenshots/Seta.png "Seta")
-![Un Juego de Plataformas](screenshots/NuevosEnemigos.png "Nuevos enemigos")
-![Un Juego de Plataformas](screenshots/NuevosEnemigos2.png "Nuevos enemigos")
-
+![A Platform Game](screenshots/Seta.png "Mushroom")
+![A Platform Game](screenshots/NuevosEnemigos.png "New enemies")
+![A Platform Game](screenshots/NuevosEnemigos2.png "New enemies")
 
 Video: https://youtu.be/MLYnfunWaFQ
 
-## Implementación
-Las clases implementadas en la PEC2 se mantienen, aunque se han ampliado ciertas funcionalidades.
+## Implementation
+The classes implemented in PEC2 are maintained, although certain functionalities have been expanded. Here are the changes from PAC2:
 
-Aquí se detallan los cambios desde la PAC2:
+### PlayerController Class
+Logic for big Mario and fire Mario states has been added. Certain code was refactored to allow lives and checkpoints. The number of Mario animations has been significantly expanded since the hitbox change is made from the Animator. Therefore, additional animator variables have been added to the code.
 
+### BrickBlock and QuestionMarkBlock Classes
+The destruction of bricks has been added if Mario is big. QuestionMarkBlocks have been expanded to allow power-ups.
 
-### Clase PlayerController
-Se han añadido lógicas correspondientes a los estados de Mario grande y Mario de fuego.
-Se ha tenido que refactorizar cierto código para permitir las vidas y los checkpoints.
-Se han ampliado en bastante el número de animaciones de Mario, ya que el cambio de hitbox lo realizamos desde el Animator. Por esta razón, se han añadido variables adicionales de animator en el código.
+### CameraFollower Class
+The camera has been adapted for respawn cases.
 
-### Clases BrickBlock y QuestionMarkBlock
-Se ha añadido la destrucción de los bricks si mario es grande.
-Se han ampliado los QuestionMarkBlocks para permitir los powerUps.
+### EndGameTrigger Class
+The class has been adapted for respawn cases.
 
-### ClaseCameraFollower
-Se ha adaptado la camara para los casos de respawn.
+### FallTrigger Class
+The class has been adapted for respawn cases.
 
-### Clase EndGameTrigger
-Se ha adaptado la clase para los casos de respawn.
+### FireballScript Class
+New class to control the behavior of Mario's fireballs with the flower. It moves to the side it is thrown until it hits either an enemy or a wall. If it is an enemy, it destroys it.
 
-### Clase FallTrigger
-Se ha adaptado la clase para los casos de respawn.
+### MushroomScript Class
+New class to control the behavior of mushrooms. It behaves like a goomba in that it moves until it hits a wall. However, in this case, the direction will always be to the right to favor Mario picking them up.
 
-### Clase FireballScript
-Nueva clase para controlar el comportamiento de las bolas de fuego de mario con la flor.
-Se mueve hacia el lado el cual es lanzada hasta que llega o a un enemigo o a una pared. En caso de ser un enemigo, lo destruye.
+### CloudEnemyController Class
+New class, controller for the new cloud-shaped enemy. Follows Mario and, if above him, generates red hedgehog-type enemies every so often.
 
-### Clase MushroomScript
-Nueva clase para controlar el comportamiento de las setas. 
-Se comporta como un goomba en cuanto a que va moviendose hasta toparse con una pared.
-Pero en este caso el sentido siempre será hacia la derecha para favorecer que Mario las pueda coger.
+### FallEnemyController Class
+New class, controller for the new "FallEnemy" red hedgehog-shaped enemy. These enemies cannot be defeated by jumping on them due to their spikes. They can only be defeated with fireballs. They fall vertically until they touch the ground. Once on the ground, they behave like Goombas, moving in a random direction until they hit a wall.
 
-### Clase CloudEnemyController
-Nueva clase, controlador del nuevo enemigo en forma de nube. Sigue a Mario, y de estar encima, genera enemigos de tipo erizo rojo cada cierto tiempo.
+### CurrentLivesUIController Class
+New class, controller for the user interface to display Mario's remaining lives. The lives Mario has are considered with the nLives variable of PlayerController.
 
-### Clase FallEnemyController
-Nueva clase, controlador del nuevo enemigo "FallEnemy" con forma de erizo rojo.
-Son enemigos a los que no se puede derrotar saltando, por sus puas. Solamente se pueden derrotar con bolas de fuego.
-Hasta que no tocan el suelo caen de forma vertical. Una vez en el suelo se comportan como Goombas, yendo hacia un sentido aleatorio hasta toparse con una pared.
+### GoalScript, HUDManager, AudioManager, GoombaController Classes
+No changes
 
-### Clase CurrentLivesUIController
-Nueva clase, controlador de la interfaz de usuario para mostrar las vidas restantes de mario.
-Se tienen en cuenta las vidas que tiene Mario con la variable nLives de PlayerController.
+## Developers
 
+- Francisco José Palacios Márquez
 
-### Clases GoalScript,HUDManager,AudioManager,GoombaController
-Sin cambios
-
-
-## Desarrolladores
-
- - Francisco José Palacios Márquez
-
-## Recursos de terceros
+## Third-Party Resources
 
 Sprites - https://www.spriters-resource.com/nes/supermariobros/
 
 Sound effects - https://themushroomkingdom.net/media/smb/wav
 
-Musica - https://downloads.khinsider.com/game-soundtracks/album/super-mario-bros
-
+Music - https://downloads.khinsider.com/game-soundtracks/album/super-mario-bros
